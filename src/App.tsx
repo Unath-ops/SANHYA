@@ -27,25 +27,27 @@ export interface CalculationResult {
   }
 }
 
-function App() {
+export default function App() {
   const [mode, setMode] = useState<'input' | 'wrapped'>('input')
   const [userData, setUserData] = useState<UserData | null>(null)
   const [result, setResult] = useState<CalculationResult | null>(null)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {mode === 'input' ? (
+    <div className="min-h-screen w-full bg-background text-foreground">
+      {mode === 'input' && (
         <InputMode
-          onCalculate={(data: UserData, calc: CalculationResult) => {
+          onCalculate={(data, calc) => {
             setUserData(data)
             setResult(calc)
             setMode('wrapped')
           }}
         />
-      ) : (
+      )}
+
+      {mode === 'wrapped' && userData && result && (
         <WrappedMode
-          userData={userData!}
-          result={result!}
+          userData={userData}
+          result={result}
           onReset={() => {
             setMode('input')
             setUserData(null)
@@ -56,5 +58,3 @@ function App() {
     </div>
   )
 }
-
-export default App
