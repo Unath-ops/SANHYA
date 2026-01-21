@@ -1,8 +1,25 @@
 import { TreePine } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Checkbox } from '../ui/checkbox';
 import type { CalculationResult } from '../../App';
 import { useEffect, useRef } from 'react';
+
+const Button = ({ children, className = '', ...props }: any) => (
+  <button
+    {...props}
+    className={`bg-[#00ff9d] text-black text-xl px-10 py-8 rounded-xl font-bold mb-6 flex gap-3 ${className}`}
+  >
+    {children}
+  </button>
+);
+
+const Checkbox = ({ checked, onCheckedChange, ...props }: any) => (
+  <input
+    type="checkbox"
+    checked={checked}
+    onChange={(e) => onCheckedChange(e.target.checked)}
+    {...props}
+    className="w-5 h-5 accent-[#00ff9d]"
+  />
+);
 
 interface RedemptionSlideProps {
   result: CalculationResult;
@@ -63,7 +80,6 @@ export default function RedemptionSlide({
       });
     }
 
-    let animationId: number;
     const startTime = Date.now();
     const duration = 3000;
 
@@ -90,23 +106,14 @@ export default function RedemptionSlide({
         ctx.restore();
       });
 
-      animationId = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     };
 
     animate();
-
-    return () => cancelAnimationFrame(animationId);
   }, [pledged]);
 
-  const handlePledgeChange = (checked: boolean) => {
-    onPledgeChange(checked);
-    if (checked && canvasRef.current) {
-      canvasRef.current.style.display = 'block';
-    }
-  };
-
   return (
-    <div className="h-full flex flex-col items-center justify-between px-6 py-12">
+    <div className="h-full flex flex-col items-center justify-between px-6 py-12 text-white">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 pointer-events-none z-50"
@@ -114,7 +121,6 @@ export default function RedemptionSlide({
       />
 
       <div className="flex-1 flex flex-col items-center justify-center max-w-2xl w-full">
-        {/* Gauge */}
         <div className="relative w-64 h-32 mb-8">
           <svg viewBox="0 0 200 100" className="w-full h-full">
             <path
@@ -132,46 +138,27 @@ export default function RedemptionSlide({
               strokeDashoffset={283 - (283 * percentage) / 100}
             />
           </svg>
-
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-2">
-            <div
-              className="text-5xl font-bold"
-              style={{ color: isDefaulter ? '#ff4d4d' : '#00ff9d' }}
-            >
+            <div className="text-5xl font-bold" style={{ color: isDefaulter ? '#ff4d4d' : '#00ff9d' }}>
               {score}
             </div>
             <div className="text-sm text-gray-400">/ 850</div>
           </div>
         </div>
 
-        {/* Status */}
-        <div
-          className={`px-8 py-4 rounded-2xl border-2 mb-8 ${
-            isDefaulter ? 'border-[#ff4d4d]' : 'border-[#00ff9d]'
-          }`}
-        >
-          <p
-            className="text-3xl font-bold"
-            style={{ color: isDefaulter ? '#ff4d4d' : '#00ff9d' }}
-          >
+        <div className={`px-8 py-4 rounded-2xl border-2 mb-8 ${isDefaulter ? 'border-[#ff4d4d]' : 'border-[#00ff9d]'}`}>
+          <p className="text-3xl font-bold" style={{ color: isDefaulter ? '#ff4d4d' : '#00ff9d' }}>
             {status}
           </p>
         </div>
 
-        {/* CTA */}
-        <Button className="bg-[#00ff9d] text-black text-xl px-10 py-8 rounded-xl font-bold mb-6 flex gap-3">
-          <TreePine />
-          Plant {treesOwed} Trees
+        <Button>
+          <TreePine /> Plant {treesOwed} Trees
         </Button>
 
-        {/* Pledge */}
         <div className="flex items-start gap-3">
-          <Checkbox
-            id="pledge"
-            checked={pledged}
-            onCheckedChange={handlePledgeChange}
-          />
-          <label htmlFor="pledge" className="text-sm text-gray-300">
+          <Checkbox checked={pledged} onCheckedChange={onPledgeChange} />
+          <label className="text-sm text-gray-300">
             I pledge to plant these trees within 30 days
           </label>
         </div>
