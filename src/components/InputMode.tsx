@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Leaf,
   Car,
@@ -7,16 +7,16 @@ import {
   UtensilsCrossed,
   Wind,
   Trash2,
-} from 'lucide-react';
-import type { UserData } from '../App';
-import LoadingTransition from './LoadingTransition';
+} from 'lucide-react'
+import type { UserData } from '../App'
+import LoadingTransition from './LoadingTransition'
 
 interface InputModeProps {
-  onCalculate: (data: UserData) => void;
+  onCalculate: (data: UserData) => void
 }
 
 export default function InputMode({ onCalculate }: InputModeProps) {
-  const [isCalculating, setIsCalculating] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false)
 
   const [formData, setFormData] = useState<UserData>({
     name: '',
@@ -28,18 +28,18 @@ export default function InputMode({ onCalculate }: InputModeProps) {
     diet: 'vegetarian',
     acDaily: false,
     plasticItems: 3,
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsCalculating(true);
+    e.preventDefault()
+    setIsCalculating(true)
     setTimeout(() => {
-      onCalculate(formData);
-    }, 1500);
-  };
+      onCalculate(formData)
+    }, 1500)
+  }
 
   if (isCalculating) {
-    return <LoadingTransition />;
+    return <LoadingTransition />
   }
 
   return (
@@ -64,17 +64,16 @@ export default function InputMode({ onCalculate }: InputModeProps) {
 
           {/* Name */}
           <div className="glass-card p-6 rounded-2xl">
-            <label htmlFor="name" className="block mb-3 text-lg font-medium">
+            <label className="block mb-3 text-lg font-medium">
               Your Name
             </label>
             <input
-              id="name"
               type="text"
+              required
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              required
               placeholder="Enter your name"
               className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500"
             />
@@ -89,18 +88,15 @@ export default function InputMode({ onCalculate }: InputModeProps) {
 
             {/* Car */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-base">Car Owner</label>
+              <div className="flex justify-between">
+                <span>Car Owner</span>
                 <input
                   type="checkbox"
                   checked={formData.carOwner}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      carOwner: e.target.checked,
-                    })
+                    setFormData({ ...formData, carOwner: e.target.checked })
                   }
-                  className="w-5 h-5 accent-[#00ff9d]"
+                  className="accent-[#00ff9d]"
                 />
               </div>
 
@@ -129,21 +125,18 @@ export default function InputMode({ onCalculate }: InputModeProps) {
 
             {/* Bike */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-base flex items-center gap-2">
-                  <Bike className="w-5 h-5 text-[#00ff9d]" />
+              <div className="flex justify-between">
+                <span className="flex items-center gap-2">
+                  <Bike className="w-4 h-4" />
                   Bike Owner
-                </label>
+                </span>
                 <input
                   type="checkbox"
                   checked={formData.bikeOwner}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      bikeOwner: e.target.checked,
-                    })
+                    setFormData({ ...formData, bikeOwner: e.target.checked })
                   }
-                  className="w-5 h-5 accent-[#00ff9d]"
+                  className="accent-[#00ff9d]"
                 />
               </div>
 
@@ -209,7 +202,7 @@ export default function InputMode({ onCalculate }: InputModeProps) {
                   key={diet}
                   type="button"
                   onClick={() => setFormData({ ...formData, diet })}
-                  className={`p-4 rounded-xl border transition ${
+                  className={`p-4 rounded-xl border ${
                     formData.diet === diet
                       ? 'border-[#00ff9d] bg-[#00ff9d]/10'
                       : 'border-white/10 bg-white/5'
@@ -224,24 +217,21 @@ export default function InputMode({ onCalculate }: InputModeProps) {
           </div>
 
           {/* Habits */}
-          <div className="glass-card p-6 rounded-2xl space-y-5">
+          <div className="glass-card p-6 rounded-2xl space-y-4">
             <div className="flex items-center gap-3">
               <Wind className="w-6 h-6 text-[#00ff9d]" />
               <h3 className="text-xl font-semibold">Habits</h3>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label>AC used daily?</label>
+            <div className="flex justify-between">
+              <span>AC used daily?</span>
               <input
                 type="checkbox"
                 checked={formData.acDaily}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    acDaily: e.target.checked,
-                  })
+                  setFormData({ ...formData, acDaily: e.target.checked })
                 }
-                className="w-5 h-5 accent-[#00ff9d]"
+                className="accent-[#00ff9d]"
               />
             </div>
 
@@ -270,7 +260,7 @@ export default function InputMode({ onCalculate }: InputModeProps) {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full h-14 rounded-xl bg-[#00ff9d] text-black font-semibold text-lg hover:bg-[#00ff9d]/90 transition"
+            className="w-full h-14 rounded-xl bg-[#00ff9d] text-black font-semibold text-lg"
           >
             CALCULATE MY DEBT
           </button>
@@ -282,5 +272,5 @@ export default function InputMode({ onCalculate }: InputModeProps) {
         Developed by the Department of Statistics, NLU
       </footer>
     </div>
-  );
+  )
 }
