@@ -1,15 +1,13 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { InternetIdentityProvider } from './hooks/useInternetIdentity';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
+import { InternetIdentityProvider } from './hooks/useInternetIdentity';
 import './index.css';
 
-const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <QueryClientProvider client={queryClient}>
+  <React.StrictMode>
     <InternetIdentityProvider>
       <App />
     </InternetIdentityProvider>
-  </QueryClientProvider>
+  </React.StrictMode>
 );
