@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { Leaf, Car, Bike, Zap, UtensilsCrossed, Wind, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
+import React, { useState } from 'react';
+import {
+  Leaf,
+  Car,
+  Bike,
+  Zap,
+  UtensilsCrossed,
+  Wind,
+  Trash2,
+} from 'lucide-react';
 import type { UserData } from '../App';
 import LoadingTransition from './LoadingTransition';
 
@@ -14,6 +17,7 @@ interface InputModeProps {
 
 export default function InputMode({ onCalculate }: InputModeProps) {
   const [isCalculating, setIsCalculating] = useState(false);
+
   const [formData, setFormData] = useState<UserData>({
     name: '',
     carOwner: false,
@@ -29,7 +33,6 @@ export default function InputMode({ onCalculate }: InputModeProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsCalculating(true);
-    // Show loading animation for 1.5 seconds
     setTimeout(() => {
       onCalculate(formData);
     }, 1500);
@@ -40,205 +43,242 @@ export default function InputMode({ onCalculate }: InputModeProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
       {/* Header */}
-      <header className="pt-8 pb-6 px-6 text-center animate-slide-down">
+      <header className="pt-8 pb-6 px-6 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <Leaf className="w-10 h-10 text-[#00ff9d]" />
-          <h1 className="text-3xl md:text-4xl font-serif font-bold tracking-tight">
-            SANKHYA
-          </h1>
+          <h1 className="text-3xl font-serif font-bold">SANKHYA</h1>
         </div>
-        <h2 className="text-2xl md:text-3xl font-serif text-[#00ff9d] mb-2">
-          Let's Audit Your Karma.
+        <h2 className="text-2xl font-serif text-[#00ff9d] mb-2">
+          Let&apos;s Audit Your Karma.
         </h2>
-        <p className="text-sm text-gray-400 max-w-md mx-auto">
+        <p className="text-sm text-gray-400">
           Answer honestly. The Earth is watching.
         </p>
       </header>
 
       {/* Form */}
-      <main className="flex-1 px-6 pb-24 max-w-2xl mx-auto w-full">
+      <main className="flex-1 px-6 pb-28 max-w-2xl mx-auto w-full">
         <form onSubmit={handleSubmit} className="space-y-8">
+
           {/* Name */}
-          <div className="glass-card p-6 rounded-2xl animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <Label htmlFor="name" className="text-lg font-medium mb-3 block">
+          <div className="glass-card p-6 rounded-2xl">
+            <label htmlFor="name" className="block mb-3 text-lg font-medium">
               Your Name
-            </Label>
-            <Input
+            </label>
+            <input
               id="name"
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter your name"
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
-              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 h-12 text-lg"
+              placeholder="Enter your name"
+              className="w-full h-12 px-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-gray-500"
             />
           </div>
 
           {/* Transport */}
-          <div className="glass-card p-6 rounded-2xl space-y-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <div className="flex items-center gap-3 mb-4">
+          <div className="glass-card p-6 rounded-2xl space-y-6">
+            <div className="flex items-center gap-3">
               <Car className="w-6 h-6 text-[#00ff9d]" />
               <h3 className="text-xl font-semibold">Transport</h3>
             </div>
 
             {/* Car */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="car-owner" className="text-base">Car Owner</Label>
-                <Switch
-                  id="car-owner"
+                <label className="text-base">Car Owner</label>
+                <input
+                  type="checkbox"
                   checked={formData.carOwner}
-                  onCheckedChange={(checked) => setFormData({ ...formData, carOwner: checked })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      carOwner: e.target.checked,
+                    })
+                  }
+                  className="w-5 h-5 accent-[#00ff9d]"
                 />
               </div>
+
               {formData.carOwner && (
-                <div className="space-y-2 animate-expand">
-                  <Label className="text-sm text-gray-400">
+                <>
+                  <p className="text-sm text-gray-400">
                     Daily kilometers: {formData.carKm} km
-                  </Label>
-                  <Slider
-                    value={[formData.carKm]}
-                    onValueChange={([value]) => setFormData({ ...formData, carKm: value })}
+                  </p>
+                  <input
+                    type="range"
                     min={0}
                     max={100}
                     step={5}
-                    className="slider-primary"
+                    value={formData.carKm}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        carKm: Number(e.target.value),
+                      })
+                    }
+                    className="w-full accent-[#00ff9d]"
                   />
-                </div>
+                </>
               )}
             </div>
 
             {/* Bike */}
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <label className="text-base flex items-center gap-2">
                   <Bike className="w-5 h-5 text-[#00ff9d]" />
-                  <Label htmlFor="bike-owner" className="text-base">Bike Owner</Label>
-                </div>
-                <Switch
-                  id="bike-owner"
+                  Bike Owner
+                </label>
+                <input
+                  type="checkbox"
                   checked={formData.bikeOwner}
-                  onCheckedChange={(checked) => setFormData({ ...formData, bikeOwner: checked })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      bikeOwner: e.target.checked,
+                    })
+                  }
+                  className="w-5 h-5 accent-[#00ff9d]"
                 />
               </div>
+
               {formData.bikeOwner && (
-                <div className="space-y-2 animate-expand">
-                  <Label className="text-sm text-gray-400">
+                <>
+                  <p className="text-sm text-gray-400">
                     Daily kilometers: {formData.bikeKm} km
-                  </Label>
-                  <Slider
-                    value={[formData.bikeKm]}
-                    onValueChange={([value]) => setFormData({ ...formData, bikeKm: value })}
+                  </p>
+                  <input
+                    type="range"
                     min={0}
                     max={50}
                     step={2}
-                    className="slider-primary"
+                    value={formData.bikeKm}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        bikeKm: Number(e.target.value),
+                      })
+                    }
+                    className="w-full accent-[#00ff9d]"
                   />
-                </div>
+                </>
               )}
             </div>
           </div>
 
           {/* Energy */}
-          <div className="glass-card p-6 rounded-2xl space-y-4 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <div className="flex items-center gap-3 mb-2">
+          <div className="glass-card p-6 rounded-2xl space-y-3">
+            <div className="flex items-center gap-3">
               <Zap className="w-6 h-6 text-[#00ff9d]" />
               <h3 className="text-xl font-semibold">Energy</h3>
             </div>
-            <Label className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400">
               Monthly electricity bill: ₹{formData.electricityBill}
-            </Label>
-            <Slider
-              value={[formData.electricityBill]}
-              onValueChange={([value]) => setFormData({ ...formData, electricityBill: value })}
+            </p>
+            <input
+              type="range"
               min={0}
               max={15000}
               step={100}
-              className="slider-primary"
+              value={formData.electricityBill}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  electricityBill: Number(e.target.value),
+                })
+              }
+              className="w-full accent-[#00ff9d]"
             />
           </div>
 
           {/* Diet */}
-          <div className="glass-card p-6 rounded-2xl space-y-4 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-            <div className="flex items-center gap-3 mb-4">
+          <div className="glass-card p-6 rounded-2xl space-y-4">
+            <div className="flex items-center gap-3">
               <UtensilsCrossed className="w-6 h-6 text-[#00ff9d]" />
               <h3 className="text-xl font-semibold">Diet</h3>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+            <div className="grid grid-cols-3 gap-3">
               {(['vegan', 'vegetarian', 'non-veg'] as const).map((diet) => (
                 <button
                   key={diet}
                   type="button"
                   onClick={() => setFormData({ ...formData, diet })}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-4 rounded-xl border transition ${
                     formData.diet === diet
                       ? 'border-[#00ff9d] bg-[#00ff9d]/10'
-                      : 'border-white/10 bg-white/5 hover:border-white/20'
+                      : 'border-white/10 bg-white/5'
                   }`}
                 >
-                  <span className="font-medium capitalize">
-                    {diet === 'non-veg' ? 'Non-Veg' : diet.charAt(0).toUpperCase() + diet.slice(1)}
-                  </span>
+                  {diet === 'non-veg'
+                    ? 'Non-Veg'
+                    : diet.charAt(0).toUpperCase() + diet.slice(1)}
                 </button>
               ))}
             </div>
           </div>
 
           {/* Habits */}
-          <div className="glass-card p-6 rounded-2xl space-y-6 animate-slide-up" style={{ animationDelay: '0.5s' }}>
-            <div className="flex items-center gap-3 mb-2">
+          <div className="glass-card p-6 rounded-2xl space-y-5">
+            <div className="flex items-center gap-3">
               <Wind className="w-6 h-6 text-[#00ff9d]" />
               <h3 className="text-xl font-semibold">Habits</h3>
             </div>
 
-            {/* AC */}
             <div className="flex items-center justify-between">
-              <Label htmlFor="ac-daily" className="text-base">AC used daily?</Label>
-              <Switch
-                id="ac-daily"
+              <label>AC used daily?</label>
+              <input
+                type="checkbox"
                 checked={formData.acDaily}
-                onCheckedChange={(checked) => setFormData({ ...formData, acDaily: checked })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    acDaily: e.target.checked,
+                  })
+                }
+                className="w-5 h-5 accent-[#00ff9d]"
               />
             </div>
 
-            {/* Plastic */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Trash2 className="w-5 h-5 text-[#00ff9d]" />
-                <Label className="text-sm text-gray-400">
-                  Plastic items used daily: {formData.plasticItems}
-                </Label>
-              </div>
-              <Slider
-                value={[formData.plasticItems]}
-                onValueChange={([value]) => setFormData({ ...formData, plasticItems: value })}
+            <div>
+              <p className="text-sm text-gray-400 flex items-center gap-2">
+                <Trash2 className="w-4 h-4" />
+                Plastic items daily: {formData.plasticItems}
+              </p>
+              <input
+                type="range"
                 min={0}
                 max={10}
                 step={1}
-                className="slider-primary"
+                value={formData.plasticItems}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    plasticItems: Number(e.target.value),
+                  })
+                }
+                className="w-full accent-[#00ff9d]"
               />
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
-            <Button
-              type="submit"
-              className="w-full h-14 text-lg font-semibold bg-[#00ff9d] text-black hover:bg-[#00ff9d]/90 rounded-xl"
-            >
-              CALCULATE MY DEBT
-            </Button>
-          </div>
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full h-14 rounded-xl bg-[#00ff9d] text-black font-semibold text-lg hover:bg-[#00ff9d]/90 transition"
+          >
+            CALCULATE MY DEBT
+          </button>
         </form>
       </main>
 
       {/* Footer */}
-      <footer
-        className="fixed bottom-0 left-0 right-0 py-4 text-center text-sm animate-fade-in"
-        style={{ color: '#d4af37', opacity: 0.7, animationDelay: '0.7s' }}
-      >
+      <footer className="fixed bottom-0 left-0 right-0 py-4 text-center text-sm text-[#d4af37] opacity-70">
         Developed by the Department of Statistics, NLU
       </footer>
     </div>
