@@ -2,6 +2,10 @@ import { useState } from 'react'
 import InputMode from './components/InputMode'
 import WrappedMode from './components/WrappedMode'
 
+/* =======================
+   TYPES
+======================= */
+
 export interface UserData {
   name: string
   carOwner: boolean
@@ -28,8 +32,9 @@ export interface CalculationResult {
 }
 
 /* =======================
-   🔥 CALCULATION LOGIC
-   ======================= */
+   CALCULATION LOGIC
+======================= */
+
 function calculateResult(data: UserData): CalculationResult {
   const travel =
     (data.carOwner ? data.carKm * 365 * 0.21 : 0) +
@@ -38,8 +43,11 @@ function calculateResult(data: UserData): CalculationResult {
   const energy = data.electricityBill * 12 * 0.82
 
   const diet =
-    data.diet === 'vegan' ? 100 :
-    data.diet === 'vegetarian' ? 300 : 700
+    data.diet === 'vegan'
+      ? 100
+      : data.diet === 'vegetarian'
+      ? 300
+      : 700
 
   const plastic = data.plasticItems * 365 * 0.02
 
@@ -72,9 +80,10 @@ function calculateResult(data: UserData): CalculationResult {
 }
 
 /* =======================
-   🧠 APP ROOT
-   ======================= */
-export default function App() {
+   APP ROOT
+======================= */
+
+function App() {
   const [mode, setMode] = useState<'input' | 'wrapped'>('input')
   const [userData, setUserData] = useState<UserData | null>(null)
   const [result, setResult] = useState<CalculationResult | null>(null)
@@ -84,9 +93,9 @@ export default function App() {
       {mode === 'input' ? (
         <InputMode
           onCalculate={(data: UserData) => {
-            const calc = calculateResult(data)
+            const calculated = calculateResult(data)
             setUserData(data)
-            setResult(calc)
+            setResult(calculated)
             setMode('wrapped')
           }}
         />
@@ -104,3 +113,5 @@ export default function App() {
     </div>
   )
 }
+
+export default App
